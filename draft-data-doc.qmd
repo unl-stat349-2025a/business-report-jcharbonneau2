@@ -1,3 +1,21 @@
 ---
 title: "Draft: Data Documentation"
 ---
+
+This data source is from NOAA and their work with sharks through their Marine Biology work. This would be good with the business report for Sharknado since the data set provides location, sighting rates, and years.
+
+```{r}
+dataset
+```
+
+Variables:
+
+-   Year: The year at which the sample was taken
+
+-   Area: Where the sample was taken
+
+-   Station Latitude/Longitude: The coordinates of the station from which the sample was taken, possibly good if we want to get very specific
+
+-   Station Depth: The depth from the surface of the ocean, could be good for determining information with tornadoes
+
+-   Several Shark Species as multiple variables: Definitely would have to be cleaned, but would be good for determining the amount of sharks (not too concerned with species specifically)
