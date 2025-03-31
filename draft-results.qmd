@@ -2,3 +2,67 @@
 title: "Draft: Results"
 ---
 
+In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this. To reference more recent data, we're starting with data from 2005-2007.
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+tornado <- torn_data #imported dataset
+
+#For the coasts, we're looking at latitude and longitude thresholds
+
+coast_boundaries <- list(
+  'East_Coast' = c(24.4, 40.7),
+  'Gulf_Coast' = c(26.332, 29.951065),
+  'West_Coast' = c(32.715736, 37.774929)   
+)
+
+#Identify whether coastal or inland
+coastal <- function(lat, coast_boundaries){
+  if (lat >= coast_boundaries[1] & lat <= coast_boundaries[2]) {
+    return(TRUE)  # Coastal
+  } else {
+    return(FALSE)  # Inland
+  }
+ 
+}
+
+tornado_data <- tornado %>%
+  mutate(
+    Start_Type = case_when(
+      sapply(slat, coastal, coast_boundaries$East_Coast) ~ "East Coast",
+      sapply(slat, coastal, coast_boundaries$Gulf_Coast) ~ "Gulf Coast",
+      sapply(slat, coastal, coast_boundaries$West_Coast) ~ "West Coast",
+      TRUE ~ "Inland"
+    ),
+    Direction = ifelse(elat > slat, "Inland -> Coastal", "Coastal -> Inland")
+  )
+
+prob <- tornado_data %>%
+  group_by(Start_Type, Direction) %>%
+  summarize(torn_count = n(), .groups = 'drop')
+
+coastal_inland_prob <- sum(prob$torn_count[prob$Start_Type != "Inland" & prob$Direction == "Coastal -> Inland"]) / sum(prob$torn_count[prob$Start_Type != "Inland"])
+
+inland_coastal_prob <- sum(prob$torn_count[prob$Start_Type == "Inland" & prob$Direction == "Inland -> Coastal"]) / sum(prob$torn_count[prob$Start_Type == "Inland"])
+
+probability <- c(coastal_inland_prob, inland_coastal_prob)
+
+probability_df <- data.frame(
+  Direction = c("Coastal -> Inland", "Inland -> Coastal"),
+  Probability = probability
+)
+
+probability_plot <- ggplot(probability_df, aes(x = Direction, y = Probability, fill = Direction)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Probability of Tornado Movement Direction", x = "Tornado Movement Direction", y = "Probability")
+
+probability_plot
+
+```
+In this table, we can see that there's a significantly higher chance of the coastal tornadoes moving inland. However, this is just for the data for 2005-2007.
+
+
+**Only able to find separated datasets. Find a way to combine all of them if a combined one is not available?
