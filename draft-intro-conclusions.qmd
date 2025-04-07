@@ -1,3 +1,11 @@
 ---
 title: "Draft: Intro/Conclusions"
 ---
+
+**Intro**
+
+Following a recent viewing of *Sharknado* (2013), concerns have been raised about the likelihood of a shark-infested weather event, specifically regarding tornadoes. As climate change continues to intensify, so do the storms, causing a larger anxiety regarding the strength of tornadoes coming from shark infested waters. While the idea absolutely seems far fetched, addressing this issue with a data driven analysis can help ease anxieties and aid in moving forward with business matters. This report will go on to examine the probability of tornadoes forming in coastal regions and moving inland, using their strengths to draw probabilities of carrying marine life. Drawing data from the National Oceanic and Atmospheric Administration (NOAA) and the United States Geological Survey (USGS), this report will seek out the likelihood of a "sharknado" and determine whether there is a potential threat.
+
+**Conclusion**
+
+After reviewing the tornado activity patterns and the strengths of the storms, the findings suggest that the probability of an EF4 or EF5 tornado carrying a shark inland is extraordinarily low. The findings indicate that it is very rare that a storm with the strength to carry a marine animal forming along the coast is very rare. Even in the event that an EF4 or EF5 tornado forms in the coastal region, the likelihood that it will form in shark infested waters remains an even stronger impossibility. Therefore, while climate change is still continuing the affect the planet, shark infested waters and tornadoes are not likely not have an significant effect on the company's bottom line and business should remain safe - for now.
