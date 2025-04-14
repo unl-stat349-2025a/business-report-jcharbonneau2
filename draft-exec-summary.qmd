@@ -1,4 +1,15 @@
 ---
+Name: Jo Charbonneau 
+Date: 04/13/2025
 title: "Draft: Executive Summary"
 ---
 
+**Executive Summary**
+
+Prompted by a recent viewing of *Sharknado* (2013), concerns within leadership have risen about the potential threat of shark infested storms - particularly tornadoes that hold the strength to transport marine life to the mainland. While this scenario will generally seem improbable at first glance, the increasing severity of weather events due to climate change has ignited discussions about whether such extreme risks could prove to become a bigger reality. In response, this report provides a data-driven analysis of this "sharknado" threat.
+
+Drawing from data sources including the National Oceanic and Atmospheric Administration (NOAA) and the United States Geological Survey (USGS), the report analyzes two key factors: (1) the frequency and geography of tornado formation, specifically regarding coastal regions, and (2) the strength of the respected tornadoes, measured by the EF scale. Because EF4 and EF5 are strongest storms with the highest potential to carry objects, the focus has been put on analyzing data with storms of those strengths.
+
+The analysis performed shows that tornadoes that form in the coast rarely have the strength to carry such weight. The analysis also indicates that it is even more rare for these tornadoes to form directly over or near waters that are home to sharks. Most tornadoes are shown to form inland and do not have the proximity to shark infested waters required to carry them to the shores and mainland. Even when coastal tornadoes do form, the circumstances required for a shark to be lifted from the water and deposited inland (trajectory, shark location, and storm strength) is extraordinarily improbable.
+
+Ultimately, while climate change does pose a serious threat and legitimate concerns for weather conditions and disaster planning, the likelihood of a "sharknado" occurring remains negligible for the moment. As such, the threat to business continuity and financial performance from airborne or deposited sharks can be considered essentially nonexistent. Company operations remain secure and should continue on as usual. With this security in mind, company resources can be more productively directed towards the real, evidence-based climate adaptation strategies and company issues.
