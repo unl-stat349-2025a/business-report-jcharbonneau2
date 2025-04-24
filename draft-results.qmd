@@ -1,68 +1,176 @@
 ---
+Name: Jo Charbonneau
 title: "Draft: Results"
+Date: 4/23/2025
 ---
 
-In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this. To reference more recent data, we're starting with data from 2005-2007.
+In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this, and so we will be using data from 2020-2024. We'll start with loading the libraries and plotting a map. I first want to verify that everything is working with plotting the coastlines. Though this isn't entirely necessary, it's a good step to ensure that everything is running well. 
 
 ```{r}
 library(tidyr)
 library(dplyr)
 library(ggplot2)
+library(mapdata)
+library(maps)
+library(sf)
+library(rnaturalearth)
+library(stringr)
+library(lubridate)
 
-tornado <- torn_data #imported dataset
 
-#For the coasts, we're looking at latitude and longitude thresholds
+world <- map_data('world')
+world_plot <- ggplot(world) + 
+  geom_polygon(data = world, aes(x = long, y = lat, group = group))
+world_plot
 
-coast_boundaries <- list(
-  'East_Coast' = c(24.4, 40.7),
-  'Gulf_Coast' = c(26.332, 29.951065),
-  'West_Coast' = c(32.715736, 37.774929)   
-)
+#Plot the coastlines 
+coastline <- ne_download(scale = 50, type = 'coastline', category = 'physical', returnclass = 'sf')
 
-#Identify whether coastal or inland
-coastal <- function(lat, coast_boundaries){
-  if (lat >= coast_boundaries[1] & lat <= coast_boundaries[2]) {
-    return(TRUE)  # Coastal
-  } else {
-    return(FALSE)  # Inland
-  }
- 
-}
+world_2 <- world_plot + 
+  geom_sf(aes(geometry = geometry), color = 'orange', data = coastline)
 
-tornado_data <- tornado %>%
-  mutate(
-    Start_Type = case_when(
-      sapply(slat, coastal, coast_boundaries$East_Coast) ~ "East Coast",
-      sapply(slat, coastal, coast_boundaries$Gulf_Coast) ~ "Gulf Coast",
-      sapply(slat, coastal, coast_boundaries$West_Coast) ~ "West Coast",
-      TRUE ~ "Inland"
-    ),
-    Direction = ifelse(elat > slat, "Inland -> Coastal", "Coastal -> Inland")
-  )
-
-prob <- tornado_data %>%
-  group_by(Start_Type, Direction) %>%
-  summarize(torn_count = n(), .groups = 'drop')
-
-coastal_inland_prob <- sum(prob$torn_count[prob$Start_Type != "Inland" & prob$Direction == "Coastal -> Inland"]) / sum(prob$torn_count[prob$Start_Type != "Inland"])
-
-inland_coastal_prob <- sum(prob$torn_count[prob$Start_Type == "Inland" & prob$Direction == "Inland -> Coastal"]) / sum(prob$torn_count[prob$Start_Type == "Inland"])
-
-probability <- c(coastal_inland_prob, inland_coastal_prob)
-
-probability_df <- data.frame(
-  Direction = c("Coastal -> Inland", "Inland -> Coastal"),
-  Probability = probability
-)
-
-probability_plot <- ggplot(probability_df, aes(x = Direction, y = Probability, fill = Direction)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Probability of Tornado Movement Direction", x = "Tornado Movement Direction", y = "Probability")
-
-probability_plot
+world_2
 
 ```
-In this table, we can see that there's a significantly higher chance of the coastal tornadoes moving inland. However, this is just for the data for 2005-2007.
+
+Now that we've verified that everything is working, let's create a map of the United States including Alaska and Hawaii. Because we are predominantly looking at the Pacific and Atlantic Coasts, along with the Gulf of Mexico, we can stick to simplicity and plot the United States coastlines. 
+```{r}
+
+world <- map_data('world')
+
+us_map <- world %>% filter(region == "USA")
+
+coastline <- ne_download(scale = 50, type = 'coastline', category = 'physical', returnclass = 'sf')
+
+us_plot <- ggplot() + 
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group), fill = 'lightgray', color = 'black') + 
+  geom_sf(data = coastline, color = 'black', size = 0.5) +
+  coord_sf(xlim = c(-180, -60), ylim = c(15, 75), expand = FALSE) + 
+  theme_minimal() + 
+  labs(title = "USA With Coastlines")
+
+us_plot
 
 
-**Only able to find separated datasets. Find a way to combine all of them if a combined one is not available?
+```
+
+The US plot looks good. Let's import the datasets from NOAA about tornadoes, ranging from 2020 to 2024. We'll also clean out this dataset to align with the coordinates from the Atlantic, Gulf of Mexico, and Pacific. 
+```{r}
+#Imported datasets
+tornado_2020
+tornado_2021
+tornado_2022
+tornado_2023
+tornado_2024
+
+tornado_2020_2024 <- bind_rows(
+  tornado_2024,
+  tornado_2023,
+  tornado_2022,
+  tornado_2021,
+  tornado_2020
+)
+
+#Clean out the data and obtain coordinates with the coasts and the Gulf of Mexico
+tornado_2020_2024_clean <- tornado_2020_2024 %>%
+  drop_na(BEGIN_LAT, BEGIN_LON, END_LAT, END_LON) %>%
+  filter(
+    (BEGIN_LON >= -98 & BEGIN_LON <= -81 & BEGIN_LAT >= 18 & BEGIN_LAT <= 32)| #Gulf of Mexico
+    (BEGIN_LON >= -80 & BEGIN_LON <= -60 & BEGIN_LAT >= 20 & BEGIN_LAT <= 45)| #Atlantic Ocean
+    (BEGIN_LON >= -180 & BEGIN_LON <= -110 & BEGIN_LAT >= 0 & BEGIN_LAT <= 45)) %>% #Pacific Ocean
+  filter(EVENT_TYPE == 'Waterspout') %>%
+    filter(END_TIME - BEGIN_TIME >= 20)
+```
+This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as NA's for this dataset, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land. 
+
+Now, let's bring in the shark data. We're using a shark_data variable, imported through tidyr. We'll clean it up and assign the coordinates from there. 
+
+```{r}
+##Clean up the shark data
+shark_clean <- shark_data %>%
+  rename(
+    Latitude = 'Station Latitude',
+    Longitude = 'Station Longitude'
+  ) %>%
+  filter(!is.na(Latitude), !is.na(Longitude))
+
+shark_location <- shark_clean %>%
+  filter(
+    (Longitude >= -98 & Longitude <= -81 & Latitude >= 18 & Latitude <= 32) |
+    (Longitude >= -80 & Longitude <= -60 & Latitude >= 20 & Latitude <= 45) |
+    (Longitude >= -180 & Longitude <= -110 & Latitude >= 0 & Latitude <= 45)
+  )
+
+#Plot the location of the sharks 
+shark_plot <- us_plot + 
+  geom_point(data = shark_location, aes(x = Longitude, y = Latitude),
+             color = 'lightblue', size = 1, alpha = 0.7)
+shark_plot
+
+```
+Now we have our shark plot of the locations of the stations. Let's combine the two datasets to see where the sharks have been seen in reference to the waterspout locations. 
+
+```{r}
+tornado_near_sharks <- tornado_2020_2024_clean %>%
+  rowwise() %>%
+  mutate(near_shark_station = any(
+    distHaversine(
+      matrix(c(BEGIN_LON, BEGIN_LAT), ncol = 2),
+      shark_location[, c("Longitude", "Latitude")]
+    ) <= 50000  # 50 km threshold
+  )) %>%
+  ungroup() %>%
+  filter(near_shark_station)
+
+tornado_shark_plot <- us_plot +
+  geom_point(data = tornado_near_sharks, aes(x = BEGIN_LON, y = BEGIN_LAT),
+             color = 'red', size = 2, alpha = 0.7) +
+  labs(title = 'Waterspouts Near Shark Locations')
+
+tornado_shark_plot
+```
+As we can see from the plot, the locations of the sharks close to the waterspout storms are mostly within the Gulf of Mexico region and some in the Atlantic coast. We want to see the probability of these moving inland. We're going to use a model and predict said probability. 
+
+```{r}
+#Now, let's calculate the probability of one of those waterspout tornadoes with sharks moving inland, starting with the waterspout probability
+
+n_total_tornadoes <- nrow(tornado_2020_2024)
+
+n_sharks <- nrow(shark_clean)
+
+n_waterspouts <- nrow(tornado_2020_2024_clean)
+
+#Calculate the tornadoes that started off shore, but landed inland
+n_land_waterspouts <- tornado_2020_2024_clean %>%
+  filter(BEGIN_LON < -81 & BEGIN_LAT < 32, END_LAT > BEGIN_LAT) %>%
+  nrow()
+
+#Now, let's calculate the probabilities 
+p_waterspout <- n_waterspouts/n_total_tornadoes
+p_land <- n_land_waterspouts/n_total_tornadoes
+p_shark_location <- shark_location/n_sharks
+
+#Let's calculate the probability of the sharks in the region moving inland
+probability <- p_waterspout * p_land * p_shark_location
+probability
+```
+The probability here is very, very low, nearing almost zero. Because of this, we can see that the probability of a waterspout/tornado with the strength to carry a shark inland and succeeding in doing so is extremely small. 
+
+
+
+```{r}
+#Cleaning up the code in quarto to prevent issues with the rendering being messy 
+
+suppressPackageStartupMessages({
+  suppressWarnings({
+    library(ggplot2)
+    library(mapdata)
+    library(maps)
+    library(sf)
+    library(rnaturalearth)
+    library(stringr)
+    library(lubridate)
+  })
+})
+
+```
