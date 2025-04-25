@@ -1,0 +1,197 @@
+---
+title: "Evaluation of the Possibility of a Sharknado"
+author: "Jo Charbonneau"
+format:
+  html: 
+    toc: true
+    toc-title: "Table of Contents"
+    number-sections: true
+    fig-cap-location: bottom
+    highlight: tango
+  pdf: 
+    toc: true
+    number-sections: true
+    fig-cap-location: bottom
+    include-in-header: assets/title.tex
+    engine: knitr
+fontsize: 12pt 
+mainfont: "Times New Roman"
+engine: knitr
+---
+
+::: page-break
+:::
+
+# Summary
+
+Prompted by a recent viewing of *Sharknado* (2013), concerns within leadership have risen about the potential threat of shark infested storms - particularly tornadoes that hold the strength to transport marine life to the mainland. While this premise may initially seem improbable at first glance, the increasing severity of weather events due to climate change has ignited discussions about whether such extreme risks could prove to become a bigger reality. In response, this report provides a data-driven analysis of this "sharknado" threat.
+
+Drawing from data sources including the National Oceanic and Atmospheric Administration (NOAA) and the United States Geological Survey (USGS), the report analyzes two key factors: (1) the geography and frequency of tornado formation, specifically regarding coastal regions, and (2) the intensity of these respective tornadoes, measured by the EF scale. Because EF4 and EF5 are strongest storms with the highest potential to carry objects, the focus has been put on analyzing data with storms of those strengths.
+
+The analysis performed shows that tornadoes that form in the coast rarely have the strength to carry such weight. Findings also indicate that it is even more rare for these tornadoes to form directly over or near waters that are home to sharks. Most tornadoes are shown to form inland and do not have the proximity to shark infested waters required to carry them to the shores and mainland. Even when coastal tornadoes do form, the circumstances required for a shark to be lifted from the water and deposited inland (trajectory, shark location, and storm strength) is extraordinarily improbable.
+
+Ultimately, while climate change does pose a serious threat and legitimate concerns for weather conditions and disaster planning, the likelihood of a "sharknado" occurring remains negligible for the moment. As such, the threat to business continuity and financial performance from airborne or deposited sharks can be considered essentially nonexistent. Company operations remain secure and should continue on as usual. With this security in mind, company resources can be more productively directed toward tangible climate adaptation stretegies and actionable business continuity planning.
+
+# Introduction
+
+Following a recent viewing of Sharknado (2013), concerns from management have been raised about the possibility of coastal tornadoes that form in shark-infested waters carrying said sharks onto the mainland. While the story of the film relies heavily on science fiction tropes, the continuously increasing concern on the effect that climate change will have on storms such as tornadoes is a question that remains pressing. This growing intensity especially concerns those living in areas near the coastlines.
+
+In light of these stated concerns, this report investigates the plausibility for such extreme events. Recent works, such as studies performed by M.J. Woods [@Woods2023] points to a measurable increase in tornado intensity as a result of climate change and shifts in atmospheric stability. With global temperatures rising, the dynamics of energy in weather systems are also varying, resulting in more extreme and erratic tornadoes.
+
+Drawing data from the National Oceanic and Atmospheric Administration (NOAA), this report will analyze the possibility of tornadoes of high strengths that have the potential of carrying objects moving from the coast to land. Though the idea of a tornado carrying a shark is generally implausible, the underlying issue of storm intensity increasing is demanding of attention. The findings in this report aim to inform about the intensity of tornadoes and to provide insight for business continuity plans in the face of such extreme circumstances.
+
+# Methods
+
+## 2.a Data Sources
+
+The data used in this analysis draws from two primary sources. The first is from the National Oceanic and Atmospheric Administration (referred to throughout this report as NOAA). The data drawn from this source is focused on their tornado and storm data from 2020 to 2024. These files were combined into a single data frame for analysis.
+
+The second source is the National Marine Fisheries Service (NMFS) and their shark location data, which includes the longitudinal and latitudinal coordinates for under water stations. This dataset was combined with the locations of the tornadoes to determine any spatial overlap between coastal tornado activity and regions with documented shark presence.
+
+## 2.b Geographic Filtering
+
+In order to place focus on tornadoes relevant to potential "Sharknado" scenarios, the NOAA tornado dataset was filtered to include only events categorized as "Waterspouts." This is due to the fact that several of the EF scales would return NA values, so the event of Waterspouts and their strengths was established through duration. An average waterspout typically lasts no longer than 20 minutes, so the focus was on those that lasted longer than 20 minutes and would therefore have a higher likelihood of being stronger. Further filtering was applied based on geographic bounding boxes for the Gulf of Mexico, the Atlantic Ocean, and the Pacific Ocean.
+
+## 2.c Shark Station Integration
+
+Shark station data was imported and cleaned. This was first done by renaming and filtering relevant latitude and longitude fields, again focusing on the Gulf of Mexico, Atlantic Ocean, and Pacific Ocean. Any records missing coordinate values remained excluded from the analysis. This allowed for accurate spatial comparison of storm locations and shark monitoring stations.
+
+## 2.d Waterspout Proximity Analysis
+
+In order to identify potential overlap between waterspouts and shark-prone areas, each tornado event was compared to all shark locations using the Haversine formula. A threshold distance of 50 kilometers was used to define general proximity to the stations. Waterspouts occurring within this distance of at least one shark station were flagged and retained for further analysis. This method allowed for a spatial estimate of how often strong waterspouts occur in shark-populated waters, which would be critical for estimating the feasability of tornado-based marine animal transport.
+
+# Results
+
+## 3.a Spatial Overlap of Waterspouts and Shark Zones
+
+In order to more closely examine potential interactions between tornadoes and shark infested waters, a spatial overlap analysis was conducted. Using shapefiles representing NOAA sharkzones, tornado tracks classified as waterspouts were overlaid to identify whether any had a route directly through known shark-populated areas. This approach helps evaluate more than just proximity - it determines whether or not the path of the tornado intersected areas of high activity. The libraries ggplot2, mapdata, maps, and sf were used to create a graph of the United States and the coast occurring within a 50-kilometer distance of where any shark stations were flagged.
+
+The resulting map, shown in Figure @ref(fig:shark-zone_overlap), shows rare but notable instances where tornado paths crossed directly into shark-monitored waters. As the figure illustrates, intersection is technically possible, but remains highly uncommon even along active coasts.
+
+```{r}
+#| label : "shark-zone-overlap"
+#| fig-cap: "Overlay of shark monitoring zones with tornado paths. Only those labeled as waterspouts are included." 
+#| out-width: 150%
+#| echo: false
+
+knitr::include_graphics("C:\\Users\\jocha\\OneDrive\\Pictures\\Screenshots\\Screenshot 2025-04-25 142830.png")
+
+```
+
+## 3.b Inland Tornado Movement
+
+From the NOAA storm dataset from 2020 to 2024, tornado events were filtered to include only those with durations longer than 20 minutes. This condition operates under the assumption that longer-lived storms contain the energy necessary to reach the shore and potentially move inland, all while having the ability to carry objects.
+
+Among all recorded waterspouts in the dataset, only sixteen met the duration threshold and also occurred within 50 kilometers of the Gulf of Mexico, Atlantic Ocean, or Pacific Ocean. Most of these took place along the Florida Peninsula and the Gulf of Mexico. While the lack of EF-scale measurements limits the ability to estimate their strengths, these findings suggest that the movement of waterspouts of such caliber is rare and, in most cases, unlikely to persist beyond the coastline.
+
+## 3.c Estimated Probability of Shark Transportation
+
+Using the intersetion data from shark zones and waterspout locations, coupled with the filtered criteria for inland duration and storm proximity, a rough estimate was made regarding the likelihood of a waterspout forming in shark-infested waters and moving inland. Out of a total of over 6,000 tornadoes (after data cleaning) from 2020 to 2024, only the sixteen were classified as both waterspouts of high strengths close to monitoring zones. The formula for the probability was calculated as follows:
+
+P(Sharknado) = P(Waterspout) \* P(Inland) \* P(Shark Location)
+
+This gave us a probability of 2.460972e-09, wich is essentially zero. From such a low probability, the potential of a shark infested tornado moving onto the coast and depositing sharks is very, very low.
+
+# Discussion
+
+This study set out to explore a lighthearted yet intriguing question after a screening of Sharknado (2013): is there any scientific basis for the scenario in which tornadoes starting in shark-infested waters have the strength to lift marine animals and deposit them on land? While the premise is entirely rooted in science fiction, it offers a creave entry point into an investigation of tornado dynamics, coastal storm patterns, and potential intersections with marine ecosystems - all of growing concern in the context of climate change.
+
+Using NOAA's Storm Events Database and gathering the tornado data from 2020 to 2024, the analysis focused predominantly on waterspouts - tornadoes formed over bodies of water - as these would represent the most plausible storm types capable of interacting with marine life. Filtering the data from the Gulf of Mexico, Atlantic Ocean, and Pacific Ocean, as well as storm strength, the locations of the strongest waterspouts in the dataset were matched with the locations of sharks from the NMFS. Events lacking complete geospatial data were excluded from the analysis, and the additional filtering was applied to retain only waterspouts of 20 minutes or more, allowing for the assumption to be made that these storms were higher in intensity and could travel farther.
+
+The results of this analysis revealed a very small number of waterspout events that both occurred within fifty kilometers to shark monitoring stations and that lasted long enough to hypothetically sustain inland movement and carry heavy objects. Even within these few cases, none demonstration conclusive evidence of actual inland progression while retaining a level of intensity sufficient to support marine life. With a lack of EF-scale values for waterspouts from the NOAA datasets, the strength of these storms can be somewhat called into question. While not entirely perfect, this method is defensible given the limitations that were in the dataset and provides a generally conservative estimate of risk.
+
+In the context of broader implications, these findings align with literature such as Woods (2023). From the examination of climate change on tornado frequency and intensity, there is substantial evidence to conclude that climate change is creating stronger and more frequent tornadoes. Although this evidence remains strong, there is no significant evidence that there is a large increase in the kind of coastal storms that might enable scenarios likened to those portrayed in the Sharknado film. This literature supports a cautious view that while the change of climate may amplify certain weather scenarios, the chain of events needed to produce a tornado capable of lifting marine animals, traveling inland, and depositing them in populated areas remains highly improbable.
+
+From a business perspective, the risks assessed in this study are effectively negligible. While climate risk assessments should account for real-world consequences of extreme weather events, the probability of a tornado-borne marine life affecting company operations is essentially zero. However, the spark of the question does encourage the organization to think critically about potential disaster prepardness, even if it may be unconventional.
+
+While the intersection of marine ecology and atmospheric science is fascinating and a question that may become more relevant over time, the data at this time does not strongly suggest that there is a threat of shark infested tornadoes making their way inland. This analysis reinforces the improtance of evidence-based risk assessment, even when influenced by pop culture phenomena. Business operations remain secure.
+
+# Conclusion
+
+After reviewing the tornado activity of storms from 2020 to 2024, the findings suggest that the probability of a waterspout or similar storms of such high strengths forming in the coast and carrying objects inland is extraordinarily low, therefore decreasing the concern of a storm carrying a shark inland. The results also indicate that even though a storm may form along the coasts, no evidence supports a realistic risk to inland infrastructure or operations.
+
+While climate change continues to influence storm and overall atmospheric instability, there is not substantial evidence to suggest that these storms are strong enough yet to be cause for great concern and does not yet interfere with company operations. At this time, the issue remains mostly negligible, but the issue of climate change remains prevalent and should be further researched to understand the underlying issues at play. The company's bottom line has little evidence to suggest it isn't safe from shark infested tornadoes at the present. ::: page-break ::: \# References Woods, A. (2023). Climate change and coastal tornado dynamics. Journal of Severe Weather, 58(3), 210–225.
+
+NOAA National Centers for Environmental Information (2024). Storm Events Database. Retrieved from https://www.ncdc.noaa.gov/stormevents/ 
+
+::: page-break :::
+
+# Appendices
+
+## 4.a Data Documentation (Draft)
+
+### NMFS Shark Data
+
+This data source is from NMFS and their work with sharks through their Marine Biology work. This dataset is crucial to understanding shark behavior and their presence in various coastal regions, which has relevance to a potential 'Sharknado' scenario. It provides key information on shark sightings, their locations, sighting rates, and the years at which sightings occurred.
+
+####Dataset Variables
+The variables of interest include:
+
+Year: The year in which the sample was taken. This will allow us to track data from specific years and monitor trends over time.
+
+Station Latitude/Longitude: The coordinates of the shark monitoring locations. This spatial information is critical for evaluating the likelihood of tornadoes intersecting shark-infested waters and ensuring that our data is exclusively from the coast.
+
+Station Depth: The depth from the surface of the ocean at the sampling station. May be irrelevant for "Sharknado" scenarios, but depth can also provide insight into shark habitats.
+
+### NOAA Tornado Data
+This tornado data from NOAA is from their Storm Events Database. It provides detailed records of tornado events across the United States through many years, staring in the 1950s. It includes very important information about geographic locations, durations, and strengths of various tornadoes. Especially in the context of a "Sharknado" scenario, these variables will be important for determining the classification and location of tornadoes to establish any probability of the storms carrying marine life to shore. 
+
+####Dataset Variables
+The variables of interest in this dataset include: 
+
+Year: The year in which the tornado event occurred. This variable is essential for tracking trends in tornado frequency and intensity over time. 
+
+Event Type: The classification of the storm, including tornadoes, waterspouts, etc. These are of particular interest for this analysis due to their possibilities to interact with marine life. 
+
+Begin Date/Time: The dates and times the storm event began. Useful for temporal analysis, and for assessing the duration and movement of storms. 
+
+End Date/Time: The date and time when the tornado event ended. Paired with the beginning date and time, this can be used to calculate the duration and possibly estimate strength. 
+
+EF Scale Rating: The Enhanced Fujita (EF) scale rating, measuring the strength of tornadoes that occurred. EF4 and EF5 tornadoes are of particular interest here. 
+
+Duration: The length of time the tornado was active. This is important for identifying tornadoes with the potential to last long enough to move from water to land. 
+
+Latitude/Longitude: The latitudinal and longitudinal locations of the storms. This will be needed for determining the locations of tornadoes along the coasts. 
+
+## 4.b Data Results (Draft)
+### Data Cleaning
+- Renaming Variables: The columns for latitude and longitude were renamed to 'Latitude' and 'Longitude' for clarity purposes 
+- Filtering: The dataset was filtered to only include stations located within the Gulf of Mexico, the Atlantic Ocean, or Pacific Ocean, as defined by the starting and ending latitude and longitude bounds. 
+- Handling Missing Data: Stations with missing/invalid longitude and latitude data are removed from the dataset. 
+
+###Combined Waterspout and Location Analysis 
+The goal is to investigate the possibility of waterspouts interacting with shark populations, which are combined using geographic proximity. 
+- Distance Calculation: The distance between the coordinates of each waterspout (BEGIN_LAT, BEGIN_LON) is calculated using the Haversine formula. A threshold of 50km was applied to identify waterspouts that were near shark stations. 
+
+The graphing of this data proved to only show about sixteen waterspouts that align with the durations over 20 minutes, as shown in the graph below: 
+
+### Probability Calculation: Waterspout with Sharks Moving Inland 
+I used a probability model to estimate the likelihood of a waterspout forming in shark-infested waters and moving inland, based on these factors: 
+- P(Waterspout): The probability of a tornado being a waterspout 
+- P(Land): The probability of a waterspout moving inland and forming over the water
+- P(Shark Location): The probability that a waterspout occurs near a shark monitoring station 
+
+The formula to calculate the probability is as follows: 
+P(Sharknado) = P(Waterspout) x P(Land) x P(Shark Location)
+
+Based on this model and the calculated probability, we can see that the probability of a "Sharknado" happening is extremely low, approaching zero. 
+
+## 4.c Intro/Conclusions (Draft)
+
+### Intro
+
+Following a recent viewing of Sharknado (2013), concerns have been raised about the likelihood of a shark-infested weather event, specifically regarding tornadoes. As climate change continues to intensify, so do the storms, causing a larger anxiety regarding the strength of tornadoes coming from shark infested waters. While the idea absolutely seems far fetched, addressing this issue with a data driven analysis can help ease anxieties and aid in moving forward with business matters. This report will go on to examine the probability of tornadoes forming in coastal regions and moving inland, using their strengths to draw probabilities of carrying marine life. Drawing data from the National Oceanic and Atmospheric Administration (NOAA) and the United States Geological Survey (USGS), this report will seek out the likelihood of a "sharknado" and determine whether there is a potential threat.
+
+###Conclusion
+
+After reviewing the tornado activity patterns and the strengths of the storms, the findings suggest that the probability of an EF4 or EF5 tornado carrying a shark inland is extraordinarily low. The findings indicate that it is very rare that a storm with the strength to carry a marine animal forming along the coast is very rare. Even in the event that an EF4 or EF5 tornado forms in the coastal region, the likelihood that it will form in shark infested waters, or any habitable areas of the ocean, remains an even stronger impossibility. Therefore, while climate change is still continuing the affect the planet, shark infested waters and tornadoes are not likely not have an significant effect on the company's bottom line and business should remain safe - for now.
+
+## 4.d Executive Summary (Draft)
+
+Prompted by a recent viewing of *Sharknado* (2013), concerns within leadership have risen about the potential threat of shark infested storms - particularly tornadoes that hold the strength to transport marine life to the mainland. While this scenario will generally seem improbable at first glance, the increasing severity of weather events due to climate change has ignited discussions about whether such extreme risks could prove to become a bigger reality. In response, this report provides a data-driven analysis of this "sharknado" threat.
+
+Drawing from data sources including the National Oceanic and Atmospheric Administration (NOAA) and the United States Geological Survey (USGS), the report analyzes two key factors: (1) the frequency and geography of tornado formation, specifically regarding coastal regions, and (2) the strength of the respected tornadoes, measured by the EF scale. Because EF4 and EF5 are strongest storms with the highest potential to carry objects, the focus has been put on analyzing data with storms of those strengths.
+
+The analysis performed shows that tornadoes that form in the coast rarely have the strength to carry such weight. The analysis also indicates that it is even more rare for these tornadoes to form directly over or near waters that are home to sharks. Most tornadoes are shown to form inland and do not have the proximity to shark infested waters required to carry them to the shores and mainland. Even when coastal tornadoes do form, the circumstances required for a shark to be lifted from the water and deposited inland (trajectory, shark location, and storm strength) is extraordinarily improbable.
+
+Ultimately, while climate change does pose a serious threat and legitimate concerns for weather conditions and disaster planning, the likelihood of a "sharknado" occurring remains negligible for the moment. As such, the threat to business continuity and financial performance from airborne or deposited sharks can be considered essentially nonexistent. Company operations remain secure and should continue on as usual. With this security in mind, company resources can be more productively directed towards the real, evidence-based climate adaptation strategies and company issues.
