@@ -86,7 +86,7 @@ tornado_2020_2024_clean <- tornado_2020_2024 %>%
     filter(END_TIME - BEGIN_TIME >= 20)
 ```
 
-This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as NA's for this dataset, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land.
+This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as null values for this data set, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land.
 
 Now, let's bring in the shark data. We're using a shark_data variable, imported through tidyr. We'll clean it up and assign the coordinates from there.
 
@@ -111,12 +111,12 @@ shark_location <- shark_clean %>%
 #Plot the location of the sharks 
 shark_plot <- us_plot + 
   geom_point(data = shark_location, aes(x = Longitude, y = Latitude),
-             color = 'lightblue', size = 1, alpha = 0.7)
+             color = 'blue', size = 1, alpha = 0.7)
 shark_plot
 
 ```
 
-Now we have our shark plot of the locations of the stations. Let's combine the two datasets to see where the sharks have been seen in reference to the waterspout locations.
+Now we have our shark plot of the locations of the stations. Let's combine the two data sets to see where the sharks have been seen in reference to the waterspout locations. We'll use a 50 km threshold for the distances between waterspouts and shark stations.
 
 ```{r echo=FALSE}
 tornado_near_sharks <- tornado_2020_2024_clean %>%
