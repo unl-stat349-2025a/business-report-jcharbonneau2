@@ -4,7 +4,7 @@ title: "Draft: Results"
 Date: 4/23/2025
 ---
 
-In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this, and so we will be using data from 2020-2024. We'll start with loading the libraries and plotting a map. I first want to verify that everything is working with plotting the coastlines. Though this isn't entirely necessary, it's a good step to ensure that everything is running well. 
+In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this, and so we will be using data from 2020-2024. We'll start with loading the libraries and plotting a map. I first want to verify that everything is working with plotting the coastlines. Though this isn't entirely necessary, it's a good step to ensure that everything is running well.
 
 ```{r echo=FALSE}
 suppressPackageStartupMessages(library(dplyr))
@@ -17,6 +17,7 @@ suppressPackageStartupMessages(library(maps))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(lubridate))
 suppressPackageStartupMessages(library(geosphere))
+library(readr)
 
 
 world <- map_data('world')
@@ -34,7 +35,8 @@ world_2
 
 ```
 
-Now that we've verified that everything is working, let's create a map of the United States including Alaska and Hawaii. Because we are predominantly looking at the Pacific and Atlantic Coasts, along with the Gulf of Mexico, we can stick to simplicity and plot the United States coastlines. 
+Now that we've verified that everything is working, let's create a map of the United States including Alaska and Hawaii. Because we are predominantly looking at the Pacific and Atlantic Coasts, along with the Gulf of Mexico, we can stick to simplicity and plot the United States coastlines.
+
 ```{r echo=FALSE}
 
 world <- map_data('world')
@@ -55,16 +57,17 @@ us_plot
 
 ```
 
-The US plot looks good. Let's import the datasets from NOAA about tornadoes, ranging from 2020 to 2024. We'll also clean out this dataset to align with the coordinates from the Atlantic, Gulf of Mexico, and Pacific. 
+The US plot looks good. Let's import the datasets from NOAA about tornadoes, ranging from 2020 to 2024. We'll also clean out this dataset to align with the coordinates from the Atlantic, Gulf of Mexico, and Pacific.
+
 ```{r echo=FALSE}
 #Imported datasets
-tornado_2020 <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\StormEvents_details-ftp_v1.0_d2020_c20240620.csv.gz")
-tornado_2021 <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\StormEvents_details-ftp_v1.0_d2021_c20250401.csv.gz")
-tornado_2022 <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\StormEvents_details-ftp_v1.0_d2022_c20250401.csv.gz")
-tornado_2023 <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\StormEvents_details-ftp_v1.0_d2023_c20250401.csv.gz")
-tornado_2024 <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\StormEvents_details-ftp_v1.0_d2024_c20250401.csv.gz")
+tornado_2020 <- read.csv("StormEvents_details-ftp_v1.0_d2020_c20240620.csv.gz")
+tornado_2021 <- read.csv("StormEvents_details-ftp_v1.0_d2021_c20250401.csv.gz")
+tornado_2022 <- read.csv("StormEvents_details-ftp_v1.0_d2022_c20250401.csv.gz")
+tornado_2023 <- read.csv("StormEvents_details-ftp_v1.0_d2023_c20250401.csv.gz")
+tornado_2024 <- read.csv("StormEvents_details-ftp_v1.0_d2024_c20250401.csv.gz")
 
-tornado_2020_2024 <- bind_rows(
+tornado_2020_2024 <- rbind(
   tornado_2024,
   tornado_2023,
   tornado_2022,
@@ -82,12 +85,13 @@ tornado_2020_2024_clean <- tornado_2020_2024 %>%
   filter(EVENT_TYPE == 'Waterspout') %>%
     filter(END_TIME - BEGIN_TIME >= 20)
 ```
-This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as NA's for this dataset, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land. 
 
-Now, let's bring in the shark data. We're using a shark_data variable, imported through tidyr. We'll clean it up and assign the coordinates from there. 
+This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as NA's for this dataset, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land.
+
+Now, let's bring in the shark data. We're using a shark_data variable, imported through tidyr. We'll clean it up and assign the coordinates from there.
 
 ```{r echo=FALSE}
-shark_data <- read.csv("C:\\Users\\jocha\\OneDrive\\Documents\\aaaahhhhh\\NMFS BLL data Susan V - Stations.csv")
+shark_data <- read.csv("NMFS BLL data Susan V - Stations.csv")
 
 ##Clean up the shark data
 shark_clean <- shark_data %>%
@@ -111,7 +115,8 @@ shark_plot <- us_plot +
 shark_plot
 
 ```
-Now we have our shark plot of the locations of the stations. Let's combine the two datasets to see where the sharks have been seen in reference to the waterspout locations. 
+
+Now we have our shark plot of the locations of the stations. Let's combine the two datasets to see where the sharks have been seen in reference to the waterspout locations.
 
 ```{r echo=FALSE}
 tornado_near_sharks <- tornado_2020_2024_clean %>%
@@ -132,7 +137,8 @@ tornado_shark_plot <- us_plot +
 
 tornado_shark_plot
 ```
-As we can see from the plot, the locations of the sharks close to the waterspout storms are mostly within the Gulf of Mexico region and some in the Atlantic coast. We want to see the probability of these moving inland. We're going to use a model and predict said probability. 
+
+As we can see from the plot, the locations of the sharks close to the waterspout storms are mostly within the Gulf of Mexico region and some in the Atlantic coast. We want to see the probability of these moving inland. We're going to use a model and predict said probability.
 
 ```{r echo=FALSE}
 #Now, let's calculate the probability of one of those waterspout tornadoes with sharks moving inland, starting with the waterspout probability
@@ -160,9 +166,8 @@ p_shark_location <- shark_location/n_sharks
 probability <- p_waterspout * p_land * p_shark_location
 probability[1]
 ```
-The probability here is very, very low, nearing almost zero. Because of this, we can see that the probability of a waterspout/tornado with the strength to carry a shark inland and succeeding in doing so is extremely small. 
 
-
+The probability here is very, very low, nearing almost zero. Because of this, we can see that the probability of a waterspout/tornado with the strength to carry a shark inland and succeeding in doing so is extremely small.
 
 ```{r include = FALSE}
 
