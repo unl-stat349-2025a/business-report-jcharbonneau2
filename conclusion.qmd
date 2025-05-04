@@ -1,3 +1,21 @@
 # Conclusion
 
-I'll fix this later I just wanna make sure everything else is running smoothly
+The hypothetical scenario of tornadoes forming over shark-infested waters and carrying sharks inland is an exciting one, but is an event rooted in science fiction. While the question does highlight critical real-world issues of intensifying storms due to climate change, this analysis shows that the event does remain unlikely. Even with the extremely low probability of a "sharknado" event, the underlying concerns about increased intensity and frequency of tornadoes remains highly relevant. 
+
+The research presented here from the shark monitoring stations, along with data from NOAA, suggests that while the threat of a storm strong enough to carry and deposit sharks inland is negligible, the risk of more frequent and severe tornadoes is a legitimate concern. The findings emphasize the need for continued monitoring of storm patterns and shark populations, as well as enhanced disaster preparedness for tangible climate concerns. 
+
+## Limitations
+Despite the interesting nature of this study, certain limitations should be acknowledged. 
+
+### EF-Scale 
+Incomplete or null values for EF-scale ratings were present throughout the entire NOAA data set, meaning that tornado strength could not be definitively determined, limiting the capacity to accurately assess the potential for inland moving tornadoes. Additionally, the analysis relied on a distance threshold around the shark locations, which has the potential to not encompass all the potential interactions between tornadoes and shark habitats. 
+
+### Probability Model 
+The probability model used to calculate the likelihood of the "sharknado" event relies on three independent conditions, which holds the potential to oversimplify the complexities of meterological and ecological factors. Variables such as local atmospheric conditions, ocean currents, and ecological changes that affect shark population patterns were not factored into the model. 
+
+## Implications 
+The findings of this report extend beyond the realm of fiction and highlights the importance of understanding the evolving risks associated with climate change. While the probability of hostile sharks being carried inland by tornadoes is virtually zero, the broader implications of increasingly intense storms due to rising global temperatures are highly significant. 
+
+In addition to the potential for stronger tornadoes, the rising threat of hurricanes, also intensified by climate change, is an emerging concern. With a significantly higher strength compared to tornadoes, the possibility of hurricanes carrying objects, including marine life, is a question that could also be investigated. As coastal communities are far more impacted by hurricanes than tornadoes, climate research should also include hurricanes in their studies of storm strength. 
+
+This study emphasizes the need for continued research into the intersections of climate change, extreme weather, and coastal ecosystems. Understanding these relationships can help inform more effective risk mitigation strategies and contribute to building resilience in communities that face increasing storms with climate change. 
