@@ -10,9 +10,12 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - summary.qmd
+    - methods.qmd
+    - results.qmd
+    - conclusion.qmd
     - references.qmd
   appendices:
+    - r-libraries.qmd
     - draft-data-doc.qmd
     - draft-results.qmd
     - draft-intro-conclusions.qmd
@@ -25,9 +28,11 @@ execute:
 
 format:
   html:
+    toc: true
     highlight-style: a11y
     theme: cosmo
   pdf:
+    toc: true
     documentclass: scrreprt
 
 
