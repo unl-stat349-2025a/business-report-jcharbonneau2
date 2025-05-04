@@ -4,20 +4,20 @@ title: "Draft: Results"
 Date: 4/23/2025
 ---
 
-In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this, and so we will be using data from 2020-2024. We'll start with loading the libraries and plotting a map. I first want to verify that everything is working with plotting the coastlines. Though this isn't entirely necessary, it's a good step to ensure that everything is running well.
+In this data analysis, we're looking for the probability that the tornadoes will start in coastal areas and move inland. NOAA has several datasets for this, spanning from the 1950s to 2024. The data that will be used is from 2020-2024. The first step will be to start loading in all the libraries and creating a map. Though this step isn't necessarily important, it will be good to ensure that everything is running correctly and smoothly.
 
 ```{r echo=FALSE}
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(ggplot2))
-suppressPackageStartupMessages(library(mapdata))
-suppressPackageStartupMessages(library(rnaturalearth))
-suppressPackageStartupMessages(library(sf))
-suppressPackageStartupMessages(library(tidyr))
-suppressPackageStartupMessages(library(maps))
-suppressPackageStartupMessages(library(stringr))
-suppressPackageStartupMessages(library(lubridate))
-suppressPackageStartupMessages(library(geosphere))
-library(readr)
+suppressMessages(suppressWarnings(library(dplyr)))
+suppressMessages(suppressWarnings(library(ggplot2)))
+suppressMessages(suppressWarnings(library(mapdata)))
+suppressMessages(suppressWarnings(library(rnaturalearth)))
+suppressMessages(suppressWarnings(library(sf)))
+suppressMessages(suppressWarnings(library(tidyr)))
+suppressMessages(suppressWarnings(library(maps)))
+suppressMessages(suppressWarnings(library(stringr)))
+suppressMessages(suppressWarnings(library(lubridate)))
+suppressMessages(suppressWarnings(library(geosphere)))
+suppressMessages(suppressWarnings(library(readr)))
 
 
 world <- map_data('world')
@@ -35,7 +35,7 @@ world_2
 
 ```
 
-Now that we've verified that everything is working, let's create a map of the United States including Alaska and Hawaii. Because we are predominantly looking at the Pacific and Atlantic Coasts, along with the Gulf of Mexico, we can stick to simplicity and plot the United States coastlines.
+Here, we can see the coastal regions highlighted in orange that ensure that everything is working correctly. Next, a map of the United States will be created, focusing on the Gulf of Mexico, Atlantic Ocean, and Pacific Ocean, but first a simple map of the United States will be plotted.
 
 ```{r echo=FALSE}
 
@@ -57,7 +57,7 @@ us_plot
 
 ```
 
-The US plot looks good. Let's import the datasets from NOAA about tornadoes, ranging from 2020 to 2024. We'll also clean out this dataset to align with the coordinates from the Atlantic, Gulf of Mexico, and Pacific.
+The US plot looks doesn't have any issues. The next step is to import the datasets from NOAA about tornadoes, ranging from 2020 to 2024. This data set will be filtered out to only include the coordinates of the Gulf, Atlantic, and Pacific before any plotting is done. 
 
 ```{r echo=FALSE}
 #Imported datasets
@@ -88,7 +88,7 @@ tornado_2020_2024_clean <- tornado_2020_2024 %>%
 
 This data is cleaned out and filtered to use Waterspout from the event type. Since we're looking at tornadoes that have the potential to pick up and transfer sharks, we'd definitely want to look at something over the water. According to NOAA, the average waterspout lasts two to twenty minutes. With this information in mind, it can be gathered that any waterspout lasting longer would likely be much stronger than average. Because the EF scales come up as null values for this data set, we'll stick with the duration of the waterspout and make assumptions from there. This would also give the tornado ample time to travel onto land.
 
-Now, let's bring in the shark data. We're using a shark_data variable, imported through tidyr. We'll clean it up and assign the coordinates from there.
+Now, the shark data is imported. This will also be filtered out with the respective latitudinal and longitudinal coordinates, and will be plotted when the data is cleaned out using the Albers Equal Area (AEA) projection. 
 
 ```{r echo=FALSE}
 shark_data <- read.csv("NMFS BLL data Susan V - Stations.csv")
@@ -108,37 +108,71 @@ shark_location <- shark_clean %>%
     (Longitude >= -180 & Longitude <= -110 & Latitude >= 0 & Latitude <= 45)
   )
 
-#Plot the location of the sharks 
-shark_plot <- us_plot + 
-  geom_point(data = shark_location, aes(x = Longitude, y = Latitude),
-             color = 'blue', size = 1, alpha = 0.7)
+#Plot and convert to AEA projection
+shark_sf <- st_as_sf(shark_location, coords = c("Longitude", "Latitude"), crs = 4326)
+
+aea_crs <- st_crs("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96")
+
+shark_aea <- st_transform(shark_sf, crs = aea_crs)
+
+bbox <- st_bbox(shark_aea)
+
+us_states <- ne_states(country = "United States of America", returnclass = "sf")
+
+us_plot <- ggplot(data = us_states) +
+  geom_sf(fill = "lightgray", color = "black") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+shark_plot <- ggplot() +
+  geom_sf(data = us_states, fill = 'lightgrey', color = 'black') +
+  geom_sf(data = shark_aea, color = 'blue', size = 1, alpha = 0.7) +
+  coord_sf(
+    crs = aea_crs, 
+    xlim = c(bbox['xmin'], bbox['xmax']),
+    ylim = c(bbox['ymin'], bbox['ymax'])
+  ) +
+  labs(
+    title = 'Shark Station Locations',
+    subtitle = 'Stations Monitored by NMFS',
+    caption = 'Projection: Albers Equal Area (AEA)') +
+  theme_minimal()
+
 shark_plot
-
 ```
 
-Now we have our shark plot of the locations of the stations. Let's combine the two data sets to see where the sharks have been seen in reference to the waterspout locations. We'll use a 50 km threshold for the distances between waterspouts and shark stations.
+The plot above displays the shark station locations in conjunction with the United States. As the plot shows, the majority of the locations are in the Gulf of Mexico.
 
-```{r echo=FALSE}
-tornado_near_sharks <- tornado_2020_2024_clean %>%
-  rowwise() %>%
-  mutate(near_shark_station = any(
-    distHaversine(
-      matrix(c(BEGIN_LON, BEGIN_LAT), ncol = 2),
-      shark_location[, c("Longitude", "Latitude")]
-    ) <= 50000  # 50 km threshold
-  )) %>%
-  ungroup() %>%
-  filter(near_shark_station)
+Using an AEA projection, the shark data will be matched with the tornado/waterspout data. This will allow for a visual of the waterspouts that are strong enough to carry marine life that also overlap with shark habitats. 
 
-tornado_shark_plot <- us_plot +
-  geom_point(data = tornado_near_sharks, aes(x = BEGIN_LON, y = BEGIN_LAT),
-             color = 'red', size = 2, alpha = 0.7) +
-  labs(title = 'Waterspouts Near Shark Locations')
+```{r}
+library(rnaturalearthhires)
 
-tornado_shark_plot
+tornado_near_sharks_sf <- st_as_sf(
+  tornado_near_sharks,
+  coords = c("BEGIN_LON", "BEGIN_LAT"),
+  crs = 4326
+)
+
+us_map <- ne_states(country = 'united states of america', returnclass = 'sf')
+
+tornado_shark_plot_sf <- ggplot() +
+  geom_sf(data = us_map, fill = 'grey', color = 'white') + 
+  geom_sf(data = tornado_near_sharks_sf, color = 'red', size = 2, alpha = 0.7) +
+  coord_sf(crs = st_crs('+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96')) + 
+  labs(
+    title = 'Waterspouts Near Shark Locations',
+    subtitle = 'Using ALbers Equal Area Projection',
+    caption = 'Sources: NOAA, USGS'
+  ) +
+  theme_minimal()
+
+tornado_shark_plot_sf
+
 ```
+The data points in red show the overlap between waterspouts of a duration longer than 20 minutes and shark habitats. There are roughly sixteen noted points of overlap, mostly in the Gulf of Mexico with some moving along the Florida Peninsula and a few along the Atlantic Coast. 
 
-As we can see from the plot, the locations of the sharks close to the waterspout storms are mostly within the Gulf of Mexico region and some in the Atlantic coast. We want to see the probability of these moving inland. We're going to use a model and predict said probability.
+Next, the focus will be on the probability of these sharks overlapping with tornadoes moving inland. 
 
 ```{r echo=FALSE}
 #Now, let's calculate the probability of one of those waterspout tornadoes with sharks moving inland, starting with the waterspout probability
@@ -167,7 +201,7 @@ probability <- p_waterspout * p_land * p_shark_location
 probability[1]
 ```
 
-The probability here is very, very low, nearing almost zero. Because of this, we can see that the probability of a waterspout/tornado with the strength to carry a shark inland and succeeding in doing so is extremely small.
+The probability here is very, very low, nearing almost zero. Because of this, it's clear that the probability of a tornado that contains a shark moving inland is nearly impossible with each of the circumstances having to align. 
 
 ```{r include = FALSE}
 
