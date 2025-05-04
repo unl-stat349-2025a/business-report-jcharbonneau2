@@ -1,27 +1,44 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
 # Introduction
 
 Following a recent viewing of Sharknado (2013), concerns from management
-have been raised about the possibility of coastal tornadoes that form in
-shark-infested waters carrying said sharks onto the mainland. While the
-story of the film relies heavily on science fiction tropes, the
-continuously increasing concern on the effect that climate change will
-have on storms such as tornadoes is a question that remains pressing.
-This growing intensity especially concerns those living in areas near
-the coastlines.
+have been raised regarding the hypothetical yet sensational scenario in
+which coastal tornadoes that form over marine life habitats might carry
+any animals, but particularly sharks, inland. While the narrative of the
+film relies heavily on science fiction and overly dramatic exaggeration,
+the underlying anxiety reflects a far more serious question: How might
+increasingly volatile weather patterns, driven by the effects of climate
+change, affect storm behavior in coastal regions?
 
-In light of these stated concerns, this report investigates the
-plausibility for such extreme events. Recent works, such as studies
-performed by M.J. Woods [@Woods2023] points to a measurable increase in
-tornado intensity as a result of climate change and shifts in
-atmospheric stability. With global temperatures rising, the dynamics of
-energy in weather systems are also varying, resulting in more extreme
-and erratic tornadoes.
+This question is especially pressing as global warming and other climate
+concerns continue to influence the frequency, distribution, and
+intensity of severe weather events. Studies, including recent research
+done by Woods et al. (2023) [@Woods_2023], suggest that climate change
+is already contributing to heightened atmospheric instability. These
+shifts are only expected to intesify the energy dynamics that fuel
+storms such as tornadoes and hurricanes, potentially leading to more
+powerful and erratic weather events. For populations residing near
+coastlines, the risk of damage from such events - regardless of any
+involvement of deposited sharks - is a growing concern.
 
-Drawing data from the National Oceanic and Atmospheric Administration
-(NOAA), this report will analyze the possibility of tornadoes of high
-strengths that have the potential of carrying objects moving from the
-coast to land. Though the idea of a tornado carrying a shark is
-generally implausible, the underlying issue of storm intensity
-increasing is demanding of attention. The findings in this report aim to
-inform about the intensity of tornadoes and to provide insight for
-business continuity plans in the face of such extreme circumstances.
+This report aims to assess the scientific plausibility of tornadoes
+forming in shark-populated coastal zones and transporting said objects
+inland. While the idea of airborne sharks remains highly improbable, the
+broader premise of increasingly intense tornadoes with heightened
+capacity for inland travel warrants legitimate analysis. Drawing on data
+from the National Oceanic and Atmospheric Administration (NOAA), as well
+as the National Marine Fisheries Service (NMFS), this investigation
+evaluates the proximity of tornado tracks to known shark stations and
+examines the physical criteria that would be required for such
+transportation to occur.
+
+Ultimately, the objective of this analysis is not to validate a
+fictional scenario, but rather to use it as a lens through which to
+explore emerging risks linked to climate patterns. The findings provide
+a novel perspective on extreme storm dynamics and are intended to inform
+future emergency preparedness and risk mitigation strategies.
