@@ -1,0 +1,12 @@
+# Software and Libraries Used 
+
+The following R packages were used for data cleaning, analysis, and visualization. 
+
+- **tidyverse**: for data manipulation and plotting
+- **ggplot2**: for custom plots and visualization 
+- **dplyr**: for filtering and summarizing data 
+- **readr**: for importing CSV files from NOAA and NMFS
+- **sf**: for spatial data handling (coordinates)
+- **mapdata**/**maps**: for drawing US maps and coastlines 
+- **knitr**: for embedding figures and R code output 
+- **stringr**: for string operations from the CSV data sets
