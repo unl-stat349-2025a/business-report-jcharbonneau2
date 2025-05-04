@@ -2,34 +2,26 @@
 
 ## Spatial Overlap of Waterspouts and Shark Zones
 
-In order to more closely examine potential interactions between
-tornadoes and shark infested waters, a spatial overlap analysis was
-conducted. This analysis used the **ggplot2**, **mapdata**, **maps**,
-and **sf** libraries.
+To explore potential interactions between tornadoes and shark-infested waters, a detailed spatial overlap analysis was performed. This analysis aimed to understand whether tornado paths, specifically waterspouts, intersect with areas known for shark populations. The libraries used for this analysis were **ggplot2**, **mapdata**, **maps**, and **sf**, allowing for efficient mapping and spatial analysis. 
 
-The shark stations included were along the Gulf of Mexico and Atlantic
-Coast, with a significant amount along the Florida Peninsula, as seen in
-Figure @ref(fig:shark-station).
+After the filtering, the shark stations included in the analysis were located along the Gulf of Mexico and the Atlantic Cost, with a significant concentration along the Florida Peninsula. These stations monitor shark activity in the area and represent regions where there is a higher likelihood of encountering sharks. Figure 4.1 displays a map providing a clear visual representation of these stations. 
 
 ```{r}
 #| label: "shark-station"
 #| fig-cap: "Shark Station Locations"
-#| out-width: 150%
+#| out-width: 100%
 #| echo: false 
 
 knitr::include_graphics('shark_station_locations.png')
 
 ```
 
-Then, an analysis was conducted to survey the overlap between the strong
-waterspouts and the shark station locations. With the AEA projection, a
-50 km threshold was applied. The waterspout-location overlap can be seen
-in @ref(station_storm_overlap).
+Following this, an analysis determined the spatial overlap between the locations of strong waterspouts and shark locations. To achieve this, the spatial data was projected using the Albers Equal Area (AEA) projection, which is a projection commonly used for maps involving large areas like coastlines. The overlap of waterspouts and shark zones can be seen in figure 4.2, where the regions of significant overlap are highlighted in red. 
 
 ```{r}
 #| label: "station_storm_overlap"
 #| fig-cap: "Spatial overlap of shark monitoring zones and high strength waterspouts"
-#| out-width: 150%
+#| out-width: 100%
 #| echo: false 
 
 knitr::include_graphics('station_storm_overlap.png')
@@ -38,15 +30,9 @@ knitr::include_graphics('station_storm_overlap.png')
 
 ## Inland Tornado Movement
 
-With the filtered data, which included over 6,000 tornado events, only
-sixteen were classified as waterspouts that both met the duration
-requirement and occurred within 50 kilometers of a major U.S. coastline
-(Gulf of Mexico, Atlantic Ocean, or Pacific Ocean). These events were
-concentration primarily along the Florida Peninsula or Gulf Coast. Due
-to the missing/incomplete EF-scale ratings in these records, their
-strength was unable to be determined. However, the scarcity of
-qualifying storms suggests that inland movement of waterspouts from
-shark-dense waters is highly uncommon.
+The next step in the analysis focused on tornadoes that may have the potential to move from the inland to the coast. From over 6,000 tornado events in the NOAA dataset, only sixteen were classified as waterspouts that both met the duration requirement and occurred within 50 kilometers of major U.S. coastlines. 
+
+Due to missing or incomplete EF-scale ratings for many of the events, it was not possible to get a true reading of their strength. However, the fact that only sixteen waterspouts met the duration of over twenty minutes and also met the proximity requirements, it can be inferred that waterspouts from shark-dense coastal waters is an extremely rare occurrence. This rarity indicates that the movement of such tornadoes beyond the coast, along with their potential for carrying sharks inland, is not a typical event and is unlikely to occur. 
 
 ## Estimated Probability of Shark Transportation
 
@@ -67,4 +53,4 @@ P(\text{Sharknado}) = P(\text{Waterspout}) \times
 P(\text{Inland}) \times P(\text{Shark Location}) \approx 2.5 \times 10^{-9}
 $$
 
-This extremely low probability, nearing zero, supports the conclusion that the likelihood of a tornado forming over shark-infesting waters containing the strength to move and deposit sharks inland is **negligibly small**. 
+This calculation yields an extremely low probability, effectively zero for practical purposes. Such a low probability supports the conclusion that the likelihood of a tornado forming over shark-infested waters, carrying sharks, and moving inland is **negligibly small**. 
