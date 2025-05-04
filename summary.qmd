@@ -1,3 +1,50 @@
 # Summary
 
-In summary, this book has no content whatsoever.
+Prompted by a recent viewing of *Sharknado (2013)*, the concerns within
+leadership have risen about the potential for aquatic life to be picked
+up and deposited inland. This would lead to chaos on ecosystems and make
+storms that hold even more danger than is already present.
+
+This report offers a data-driven assessment of the so-called "sharknado"
+threat, using data sets from:
+
+-   **National Oceanic and Atmospheric Administration (NOAA)** - for
+    tornado tracking and storm events
+-   **United States Geological Survey (USGS)** and **NOAA shark
+    monitoring stations** - for marine life locations
+
+**Key findings include:**
+
+-   **Tornado Strength Estimates**: Due to a missing EF-scale in many of
+    the records, storm *duration* was use to estimate the strength of
+    the storms - specifically identifying waterspouts that lasted more
+    than twenty minutes.
+-   It is even rarer for these tornadoes to originate directly over
+    known shark habitats.
+-   **Likelihood Analysis**: Based on frequency, location, and proximity
+    to sharks, the probability of a "sharknado" event is effectively
+    zero - calculated at approximately **2.5 × 10⁻9**.
+
+**Recommendations**
+
+-   No operational changes are required at this time based on
+    thisscenario.
+
+-   Communication teams may choose to address the topic preemptively -
+    especially if it resurfaces in public media.
+
+-   Climate change adaptation efforts should continue to focus on
+    high-likelihood, high-impact scenarios (flooding, hurricane surges,
+    etc.)
+
+**Conclusion**
+
+While the idea of airborne sharks is a cinematic fantasy, the analysis
+confirms that the real-world risk of such events is negligible. The rare
+alignment of location, storm strength, and shark presence makes
+a"sharknado" event effectively impossible.
+
+Company operations face **no measurable risk** from shark-laden storms.
+
+Resources should be directed towards tangible climate resilience
+strategies.
