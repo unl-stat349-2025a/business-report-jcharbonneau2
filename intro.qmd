@@ -31,11 +31,11 @@ forming in shark-populated coastal zones and transporting said objects
 inland. While the idea of airborne sharks remains highly improbable, the
 broader premise of increasingly intense tornadoes with heightened
 capacity for inland travel warrants legitimate analysis. Drawing on data
-from the National Oceanic and Atmospheric Administration (NOAA), as well
-as the National Marine Fisheries Service (NMFS), this investigation
-evaluates the proximity of tornado tracks to known shark stations and
-examines the physical criteria that would be required for such
-transportation to occur.
+from the National Oceanic and Atmospheric Administration (NOAA) [@NOAA],
+as well as the National Marine Fisheries Service (NMFS) [@NMFS], this
+investigation evaluates the proximity of tornado tracks to known shark
+stations and examines the physical criteria that would be required for
+such transportation to occur.
 
 Ultimately, the objective of this analysis is not to validate a
 fictional scenario, but rather to use it as a lens through which to
