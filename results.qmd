@@ -1,0 +1,70 @@
+# Results
+
+## Spatial Overlap of Waterspouts and Shark Zones
+
+In order to more closely examine potential interactions between
+tornadoes and shark infested waters, a spatial overlap analysis was
+conducted. This analysis used the **ggplot2**, **mapdata**, **maps**,
+and **sf** libraries.
+
+The shark stations included were along the Gulf of Mexico and Atlantic
+Coast, with a significant amount along the Florida Peninsula, as seen in
+Figure @ref(fig:shark-station).
+
+```{r}
+#| label: "shark-station"
+#| fig-cap: "Shark Station Locations"
+#| out-width: 150%
+#| echo: false 
+
+knitr::include_graphics('shark_station_locations.png')
+
+```
+
+Then, an analysis was conducted to survey the overlap between the strong
+waterspouts and the shark station locations. With the AEA projection, a
+50 km threshold was applied. The waterspout-location overlap can be seen
+in @ref(station_storm_overlap).
+
+```{r}
+#| label: "station_storm_overlap"
+#| fig-cap: "Spatial overlap of shark monitoring zones and high strength waterspouts"
+#| out-width: 150%
+#| echo: false 
+
+knitr::include_graphics('station_storm_overlap.png')
+
+```
+
+## Inland Tornado Movement
+
+With the filtered data, which included over 6,000 tornado events, only
+sixteen were classified as waterspouts that both met the duration
+requirement and occurred within 50 kilometers of a major U.S. coastline
+(Gulf of Mexico, Atlantic Ocean, or Pacific Ocean). These events were
+concentration primarily along the Florida Peninsula or Gulf Coast. Due
+to the missing/incomplete EF-scale ratings in these records, their
+strength was unable to be determined. However, the scarcity of
+qualifying storms suggests that inland movement of waterspouts from
+shark-dense waters is highly uncommon.
+
+## Estimated Probability of Shark Transportation
+
+To assess the theoretical likelihood of a "sharknado" scenario, the
+joint probability of three independent conditions being met is assumed:
+
+1.  A tornado forms over shark-monitored waters: P(Shark Location)
+
+2.  The tornado is classified as a waterspout: P(Waterspout)
+
+3.  The tornado travels inland with sufficient duration: P(Inland)
+
+Using the observed frequencies from the cleaned NOAA dataset and shark
+monitoring data, the following probability was calculated as:
+
+$$
+P(\text{Sharknado}) = P(\text{Waterspout}) \times
+P(\text{Inland}) \times P(\text{Shark Location}) \approx 2.5 \times 10^{-9}
+$$
+
+This extremely low probability, nearing zero, supports the conclusion that the likelihood of a tornado forming over shark-infesting waters containing the strength to move and deposit sharks inland is **negligibly small**. 
