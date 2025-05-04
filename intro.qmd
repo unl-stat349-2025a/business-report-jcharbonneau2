@@ -1,5 +1,27 @@
 # Introduction
 
-This is a book created from markdown and executable code.
+Following a recent viewing of Sharknado (2013), concerns from management
+have been raised about the possibility of coastal tornadoes that form in
+shark-infested waters carrying said sharks onto the mainland. While the
+story of the film relies heavily on science fiction tropes, the
+continuously increasing concern on the effect that climate change will
+have on storms such as tornadoes is a question that remains pressing.
+This growing intensity especially concerns those living in areas near
+the coastlines.
 
-See @knuth84 for additional discussion of literate programming.
+In light of these stated concerns, this report investigates the
+plausibility for such extreme events. Recent works, such as studies
+performed by M.J. Woods [@Woods2023] points to a measurable increase in
+tornado intensity as a result of climate change and shifts in
+atmospheric stability. With global temperatures rising, the dynamics of
+energy in weather systems are also varying, resulting in more extreme
+and erratic tornadoes.
+
+Drawing data from the National Oceanic and Atmospheric Administration
+(NOAA), this report will analyze the possibility of tornadoes of high
+strengths that have the potential of carrying objects moving from the
+coast to land. Though the idea of a tornado carrying a shark is
+generally implausible, the underlying issue of storm intensity
+increasing is demanding of attention. The findings in this report aim to
+inform about the intensity of tornadoes and to provide insight for
+business continuity plans in the face of such extreme circumstances.
