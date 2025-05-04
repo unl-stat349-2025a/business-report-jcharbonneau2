@@ -1,0 +1,45 @@
+# Methods
+
+## Data Sources
+
+The data used in this analysis draws from two primary sources:
+
+-   **National Oceanic and Atmospheric Administration (NOAA):** Tornado and storm event data were filtered out to only include data from 2020 to 2024. This data was combined and collected into a single data set. The important data set attributes include:
+    -   Storm type (filtered out to only include Waterspouts)
+    -   Start/End coordinates
+    -   Duration of storm
+-   **National Marine Fisheries Service (NMFS):** Shark monitoring station data including latitudinal and longitudinal coordinates for underwater stations. This data enabled spatial comparison between tornado paths and documented shark habits.
+
+These two data sets were cleaned and merged to support proximity and overlap analyses.
+
+## Geographic & Temporal Filtering
+
+In order to isolate tornado events that had relevance to the "sharknado" threat:
+
+-   Only tornadoes classified as **Waterspouts** were retained, as they formed over the shark-infested waters.
+
+-   Due to many entries lacking an EF-scale value, storm duration was used as a proxy for tornado strength.
+
+    -   Waterspouts lasting **longer than 20 minutes** were considered to be more likely to be strong enough to transport marine life.
+
+-   The data set was further filtered to exclusively include tornadoes within the boundaries of the Gulf of Mexico, the Atlantic Ocean, and the Pacific Ocean with their respective coordinates.
+
+These filters prioritized tornadoes with plausible strength and proximity to shark-populated waters that also had the potential to move inland.
+
+## Shark Station Cleaning and Integration
+
+The NMFS shark data set was prepared through:
+
+-   Renaming and selecting relevant coordinate fields (pertaining to the Gulf of Mexico, the Atlantic Ocean, and Pacific Ocean)
+
+-   Removing records with missing/invalid geographic data
+
+With this filtering, consistent spatial framework for overlap analysis was ensured.
+
+## Waterspout Proximity Analysis
+
+To assess potential overlap between tornadoes and shark-prone regions, all geographic coordinates were converted into an Albers Equal Area (AEA) projection. This projection preserves area and is well-suited for regional distance analysis in the United States.
+
+Using this projection, the proximity of each storm (waterspout) to documented shark locations was calculated. A 50 kilometer threshold was used to flag tornadoes occurring within close range of any shark stations, and these points were retained for further analysis.
+
+This spatial approach ensured accurate measurement over coastal geography and improved reliability when estimated how often stronger, longer-duration waterspouts occur in shark-populated waters.
